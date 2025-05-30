@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'screens/folder/folder_page.dart';
 import 'screens/personal/widget/personal_page.dart';
 import 'screens/settings/widget/settings_page.dart';
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Todo App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white10),
         useMaterial3: true,
       ),
       initialRoute: '/',

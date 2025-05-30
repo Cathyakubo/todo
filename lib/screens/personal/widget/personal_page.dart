@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-class PersonalPage extends StatelessWidget {
-  final List<Map<String, dynamic>> lists = [
+class PersonalPage extends StatefulWidget {
+  const PersonalPage({super.key});
+
+  @override
+  State<PersonalPage> createState() => _PersonalPageState();
+}
+
+class _PersonalPageState extends State<PersonalPage> {
+  List<Map<String, dynamic>> lists = [
     {
       'title': 'Weekly Planner',
       'progress': 0.2,
@@ -36,7 +43,16 @@ class PersonalPage extends StatelessWidget {
     'list': 'Weekly Planner',
   };
 
-  PersonalPage({super.key});
+  void addNewList() {
+    setState(() {
+      lists.add({
+        'title': 'New List ${lists.length + 1}',
+        'progress': 0.0,
+        'icon': Icons.list,
+        'color': Colors.purple[100],
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +74,7 @@ class PersonalPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      // Add new list logic here
-                    },
+                    onPressed: addNewList,
                     icon: const Icon(Icons.add_box_outlined),
                     label: const Text("New List"),
                     style: ElevatedButton.styleFrom(
@@ -73,7 +87,6 @@ class PersonalPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10, width: 12),
-
             const Text(
               "LISTS",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -93,7 +106,11 @@ class PersonalPage extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Icon(item['icon'], size: 30),
+                          Icon(
+                            item['icon'],
+                            size: 30,
+                            color: item['iconColor'] ?? Colors.black,
+                          ),
                           const SizedBox(width: 16),
                           Expanded(
                             child: Column(
@@ -128,7 +145,6 @@ class PersonalPage extends StatelessWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
@@ -147,7 +163,6 @@ class PersonalPage extends StatelessWidget {
                 ],
               ),
             ),
-
             const SizedBox(height: 10),
 
             // TASK CARD

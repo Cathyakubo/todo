@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:three_screen_app/screens/personal/widget/personal_page.dart';
 import '../../custom/custom_app_bar.dart';
 import 'widget/folder_card.dart';
-import 'widget/iconlist.dart';
+import 'widget/iconlist.dart'; // Make sure iconDropdownItems and iconColors are defined here
 
 class FolderPage extends StatefulWidget {
   const FolderPage({super.key});
@@ -51,9 +51,9 @@ class _FolderPageState extends State<FolderPage> {
 
     showDialog(
       context: context,
-      builder: (_) {
+      builder: (BuildContext dialogContext) {
         return StatefulBuilder(
-          builder: (context, setState) {
+          builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
               title: const Text("New Folder"),
               content: Column(
@@ -64,15 +64,20 @@ class _FolderPageState extends State<FolderPage> {
                     decoration: const InputDecoration(labelText: 'Folder Name'),
                   ),
                   const SizedBox(height: 15),
-                  const Text('Select Icon:'),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Select Icon:'),
+                  ),
                   const SizedBox(height: 10),
                   DropdownButton<IconData>(
                     value: selectedIcon,
                     items: iconDropdownItems,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedIcon = value!;
-                      });
+                    onChanged: (IconData? value) {
+                      if (value != null) {
+                        setState(() {
+                          selectedIcon = value;
+                        });
+                      }
                     },
                   ),
                 ],
@@ -80,20 +85,28 @@ class _FolderPageState extends State<FolderPage> {
               actions: [
                 TextButton(
                   child: const Text("Cancel"),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    titleController.dispose();
+                    Navigator.pop(dialogContext);
+                  },
                 ),
                 TextButton(
                   child: const Text("Add"),
                   onPressed: () {
-                    setState(() {
-                      folders.add({
-                        'title': titleController.text,
-                        'lists': 0,
-                        'icon': selectedIcon,
-                        'color': iconColors[selectedIcon] ?? Colors.grey[200],
-                      });
+                    final newTitle = titleController.text.trim();
+                    if (newTitle.isEmpty) {
+                      // Optional: Show error or just return
+                      return;
+                    }
+                    folders.add({
+                      'title': newTitle,
+                      'lists': 0,
+                      'icon': selectedIcon,
+                      'color': iconColors[selectedIcon] ?? Colors.grey[200],
                     });
-                    Navigator.pop(context);
+                    titleController.dispose();
+                    Navigator.pop(dialogContext);
+                    setState(() {}); // Refresh folder list UI
                   },
                 ),
               ],
@@ -127,7 +140,9 @@ class _FolderPageState extends State<FolderPage> {
                 color: folder['color'],
                 onTap:
                     () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => PersonalPage()),
+                      MaterialPageRoute(
+                        builder: (context) => const PersonalPage(),
+                      ),
                     ),
               ),
             ),
@@ -162,7 +177,7 @@ class _FolderPageState extends State<FolderPage> {
           BottomNavigationBarItem(
             icon: Padding(
               padding: const EdgeInsets.only(bottom: 4.0),
-              child: Icon(Icons.add),
+              child: Icon(Icons.add_box_outlined),
             ),
             label: '',
           ),
@@ -171,3 +186,10 @@ class _FolderPageState extends State<FolderPage> {
     );
   }
 }
+
+final Map<IconData, Color> iconColors = {
+  Icons.folder: Colors.blue.shade100,
+  Icons.favorite: Colors.pink.shade100,
+  Icons.work: Colors.green.shade100,
+  Icons.school: Colors.orange.shade100,
+};
