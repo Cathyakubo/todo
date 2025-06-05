@@ -123,7 +123,7 @@ class _FolderPageState extends State<FolderPage> {
       appBar: const CustomAppBar(
         title: 'Folders',
         showFilterIcon: true,
-        showBackButton: false,
+        showBackButton: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

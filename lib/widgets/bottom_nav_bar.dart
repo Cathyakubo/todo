@@ -29,12 +29,10 @@ class BottomNavBar extends StatelessWidget {
             icon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.grid_view_outlined),
             label: 'Grid',
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today_outlined),
             label: 'Calendar',
